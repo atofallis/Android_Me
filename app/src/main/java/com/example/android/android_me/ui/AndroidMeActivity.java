@@ -17,7 +17,9 @@
 package com.example.android.android_me.ui;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.android.android_me.R;
@@ -34,15 +36,19 @@ public class AndroidMeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_android_me);
+        configureBodyParts(savedInstanceState, this);
+    }
+
+    public static void configureBodyParts(Bundle savedInstanceState, AppCompatActivity context) {
+        Bundle extras = context.getIntent().getExtras();
+        FragmentManager fm = context.getSupportFragmentManager();
 
         if(savedInstanceState == null) {
+            final int headIndex = extras == null ? 0 : extras.getInt(BUNDLE_HEAD_INDEX);
+            final int bodyIndex = extras == null ? 0 : extras.getInt(BUNDLE_BODY_INDEX);
+            final int legIndex = extras == null ? 0 : extras.getInt(BUNDLE_LEG_INDEX);
 
-            Bundle extras = getIntent().getExtras();
-            final int headIndex = extras.getInt(BUNDLE_HEAD_INDEX);
-            final int bodyIndex = extras.getInt(BUNDLE_BODY_INDEX);
-            final int legIndex = extras.getInt(BUNDLE_LEG_INDEX);
-
-            BodyPartFragment headFragment = (BodyPartFragment) Fragment.instantiate(this, BodyPartFragment.class.getName());
+            BodyPartFragment headFragment = (BodyPartFragment) Fragment.instantiate(context, BodyPartFragment.class.getName());
 //            BodyPartFragment headFragment = new BodyPartFragment();
             headFragment.setBodyPartsList(AndroidImageAssets.getHeads());
             headFragment.setBodyPartIndex(headIndex);
@@ -55,7 +61,6 @@ public class AndroidMeActivity extends AppCompatActivity {
             legsFragment.setBodyPartsList(AndroidImageAssets.getLegs());
             legsFragment.setBodyPartIndex(legIndex);
 
-            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
             fm.beginTransaction()
                     .add(R.id.head_container, headFragment)
                     .add(R.id.body_container, bodyFragment)

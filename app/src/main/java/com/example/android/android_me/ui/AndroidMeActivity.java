@@ -23,6 +23,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.android.android_me.R;
 import com.example.android.android_me.data.AndroidImageAssets;
 
+import static com.example.android.android_me.ui.MainActivity.BUNDLE_BODY_INDEX;
+import static com.example.android.android_me.ui.MainActivity.BUNDLE_HEAD_INDEX;
+import static com.example.android.android_me.ui.MainActivity.BUNDLE_LEG_INDEX;
+
 // This activity will display a custom Android image composed of three body parts: head, body, and legs
 public class AndroidMeActivity extends AppCompatActivity {
 
@@ -32,18 +36,24 @@ public class AndroidMeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_android_me);
 
         if(savedInstanceState == null) {
+
+            Bundle extras = getIntent().getExtras();
+            final int headIndex = extras.getInt(BUNDLE_HEAD_INDEX);
+            final int bodyIndex = extras.getInt(BUNDLE_BODY_INDEX);
+            final int legIndex = extras.getInt(BUNDLE_LEG_INDEX);
+
             BodyPartFragment headFragment = (BodyPartFragment) Fragment.instantiate(this, BodyPartFragment.class.getName());
 //            BodyPartFragment headFragment = new BodyPartFragment();
             headFragment.setBodyPartsList(AndroidImageAssets.getHeads());
-            headFragment.setBodyPartIndex(1);
+            headFragment.setBodyPartIndex(headIndex);
 
             BodyPartFragment bodyFragment = new BodyPartFragment();
             bodyFragment.setBodyPartsList(AndroidImageAssets.getBodies());
-            bodyFragment.setBodyPartIndex(1);
+            bodyFragment.setBodyPartIndex(bodyIndex);
 
             BodyPartFragment legsFragment = new BodyPartFragment();
             legsFragment.setBodyPartsList(AndroidImageAssets.getLegs());
-            legsFragment.setBodyPartIndex(1);
+            legsFragment.setBodyPartIndex(legIndex);
 
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
             fm.beginTransaction()

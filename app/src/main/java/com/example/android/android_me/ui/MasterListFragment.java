@@ -50,6 +50,6 @@ public class MasterListFragment extends Fragment {
     }
 
     public interface OnImageClickListener {
-        void onImageSelected(int posisiton);
+        void onImageSelected(int position);
     }
 }

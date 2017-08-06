@@ -3,6 +3,7 @@ package com.example.android.android_me.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -12,6 +13,8 @@ import com.example.android.android_me.R;
 import com.example.android.android_me.data.AndroidImageAssets;
 
 public class MainActivity extends AppCompatActivity implements MasterListFragment.OnImageClickListener {
+
+    private static final String TAG = MainActivity.class.getName();
 
     public static final String BUNDLE_HEAD_INDEX = "head_index";
     public static final String BUNDLE_BODY_INDEX = "body_index";
@@ -36,6 +39,14 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
 
             AndroidMeActivity.configureBodyParts(savedInstanceState, this);
         } else {
+            if(savedInstanceState != null) {
+                mHeadIndex = savedInstanceState.getInt(BUNDLE_HEAD_INDEX);
+                mBodyIndex = savedInstanceState.getInt(BUNDLE_BODY_INDEX);
+                mLegIndex = savedInstanceState.getInt(BUNDLE_LEG_INDEX);
+                Log.d(TAG, BUNDLE_HEAD_INDEX + " (create) :" + mHeadIndex);
+                Log.d(TAG, BUNDLE_BODY_INDEX + " (create) :" + mBodyIndex);
+                Log.d(TAG, BUNDLE_LEG_INDEX + " (create) :" + mLegIndex);
+            }
             // initialise next button click listener with defaults
             configureNextButton();
         }
@@ -111,5 +122,17 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(BUNDLE_HEAD_INDEX, mHeadIndex);
+        outState.putInt(BUNDLE_BODY_INDEX, mBodyIndex);
+        outState.putInt(BUNDLE_LEG_INDEX, mLegIndex);
+
+        Log.d(TAG, BUNDLE_HEAD_INDEX + " (save) :" + mHeadIndex);
+        Log.d(TAG, BUNDLE_BODY_INDEX + " (save) :" + mBodyIndex);
+        Log.d(TAG, BUNDLE_LEG_INDEX + " (save) :" + mLegIndex);
     }
 }
